@@ -21,5 +21,6 @@ public:
 	string get_id();
 	string get_password();
 	string get_year();
+	vector<Course> get_finished();
+	vector<Course> get_inProgress();
 };
-

@@ -62,7 +62,8 @@ int main()
 
 				else if (admin_option == 3)
 				{
-					//course prerequisite code
+					admin.add_prerequisite(courses);
+					continue;
 				}
 
 				else if (admin_option == 4)

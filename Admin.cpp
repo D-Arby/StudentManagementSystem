@@ -18,10 +18,11 @@ string Admin::get_password()
 	return password;
 }
 
-void Admin::add_student(vector<Student> &students)
+void Admin::add_student(vector<Student>& students)
 {
 	string name, id, password;
 	int year;
+	int flag = 1;
 	cout << "------ Adding new student ------\n";
 	cout << "Name: ";
 	cin.ignore();
@@ -37,8 +38,14 @@ void Admin::add_student(vector<Student> &students)
 			if (id == student.get_id())
 			{
 				cout << "ID already exists. Please choose a suitable ID.\n";
-				continue;
+				flag = 0;
+				break;
 			}
+		}
+
+		if (!flag)
+		{
+			continue;
 		}
 
 		break;
@@ -71,6 +78,7 @@ void Admin::add_course(vector<Course>& courses)
 {
 	string name, code;
 	int max, hours;
+	int flag = 1;
 
 	cout << "------ Adding new course ------\n";
 
@@ -85,12 +93,20 @@ void Admin::add_course(vector<Course>& courses)
 			if (course.get_name() == name)
 			{
 				cout << "Course already exists. Please choose another name.\n";
-				continue;
+				flag = 0;
+				break;
 			}
+		}
+
+		if (!flag)
+		{
+			continue;
 		}
 
 		break;
 	}
+
+	flag = 1;
 
 	while (true)
 	{
@@ -102,8 +118,14 @@ void Admin::add_course(vector<Course>& courses)
 			if (course.get_code() == code)
 			{
 				cout << "Course already exists. Please choose another code.\n";
-				continue;
+				flag = 0;
+				break;
 			}
+		}
+
+		if (!flag)
+		{
+			continue;
 		}
 
 		break;
@@ -141,4 +163,114 @@ void Admin::add_course(vector<Course>& courses)
 	courses.push_back(new_course);
 
 	cout << "------ Course added successfully ------\n\n";
+}
+
+void Admin::add_prerequisite(vector<Course>& courses)
+{
+	string course_code;
+	int flag = 0;
+	int course_index;
+
+	while (true)
+	{
+		cout << "Enter course code: ";
+		cin >> course_code;
+
+		for (Course course : courses)
+		{
+			if (course.get_code() == course_code)
+			{
+				flag = 1;
+
+				auto it = find(courses.begin(), courses.end(), course);
+				course_index = it - courses.begin();
+
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course doesn't exist. Please enter a valid code.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	flag = 0;
+
+	cout << "Is the prerequisite course\n1) An existing course\n2) A new course\n>>> ";
+
+	int pre_type;
+	cin >> pre_type;
+
+	if (pre_type == 1)
+	{
+		string required_course_code;
+		int required_course_index;
+
+		while (true)
+		{
+			//Loop to check for the existence of the code
+			while (true)
+			{
+				cout << "Enter required course code: ";
+				cin >> required_course_code;
+
+				for (Course course : courses)
+				{
+					if (course.get_code() == required_course_code)
+					{
+						flag = 1;
+
+						auto it = find(courses.begin(), courses.end(), course);
+						required_course_index = it - courses.begin();
+
+						break;
+					}
+				}
+
+				if (!flag)
+				{
+					cout << "Course doesn't exist. Please enter a valid code.\n";
+					continue;
+				}
+
+				break;
+			}
+
+			flag = 1;
+
+			for (Course course : courses[required_course_index].get_required())
+			{
+				if (course.get_code() == course_code)
+				{
+					flag = 0;
+					break;
+				}
+			}
+
+			if (!flag)
+			{
+				cout << "Course mismatch. Please enter a valid course.\n";
+				continue;
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+
+		courses[course_index].get_required().push_back(courses[required_course_index]);
+	}
+
+	else
+	{
+		//Add course and then add it to the vector
+		add_course(courses);
+		courses[course_index].get_required().push_back(courses[courses.size() - 1]);
+	}
+
 }

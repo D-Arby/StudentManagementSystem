@@ -14,6 +14,7 @@ public:
 	Admin(string name, string password);
 	string get_name();
 	string get_password();
-	void add_student(vector<Student> &students);
-	void add_course(vector<Course> &courses);
+	void add_student(vector<Student>& students);
+	void add_course(vector<Course>& courses);
+	void add_prerequisite(vector<Course>& courses);
 };

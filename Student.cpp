@@ -27,3 +27,13 @@ string Student::get_year()
 {
 	return to_string(year);
 }
+
+vector<Course> Student::get_finished()
+{
+	return finished;
+}
+
+vector<Course> Student::get_inProgress()
+{
+	return inProgress;
+}
