@@ -33,7 +33,7 @@ int Course::get_hours()
 	return hours;
 }
 
-vector<Course>& Course:: get_required()
+vector<Course>& Course::get_required()
 {
 	return required;
 }

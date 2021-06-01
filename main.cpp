@@ -9,8 +9,36 @@ using namespace std;
 int main()
 {
 	Admin admin("admin", "123456789");
+
+	Student student1("Abdelrahman", "20191700343", "567308246", 2);
+	Student student2("Seif", "20191700310", "1597532846", 2);
+	Student student3("Shehab", "20191700350", "147852369", 2);
+
+	Course course1("OOP", "CS150", 50, 3);
+	Course course2("SP", "CS170", 100, 3);
+	Course course3("Introduction to CS", "CS101", 200, 2);
+	Course course4("Calculus", "BSC99", 120, 3);
+	Course course5("Physics", "BSC210", 150, 3);
+
+	course1.get_required().push_back(course2);
+	course2.get_required().push_back(course3);
+	course5.get_required().push_back(course4);
+
+	student1.get_finished().push_back(course3);
+	student1.get_inProgress().push_back(course4);
+
 	vector<Course> courses;
 	vector<Student> students;
+
+	courses.push_back(course1);
+	courses.push_back(course2);
+	courses.push_back(course3);
+	courses.push_back(course4);
+	courses.push_back(course5);
+
+	students.push_back(student1);
+	students.push_back(student2);
+	students.push_back(student3);
 
 	int user;
 
@@ -23,6 +51,7 @@ int main()
 		{
 			//admin control code
 			string admin_name, admin_password;
+			system("CLS");
 
 			while (true)
 			{
@@ -50,18 +79,21 @@ int main()
 
 				if (admin_option == 1)
 				{
+					system("CLS");
 					admin.add_student(students);
 					continue;
 				}
 
 				else if (admin_option == 2)
 				{
+					system("CLS");
 					admin.add_course(courses);
 					continue;
 				}
 
 				else if (admin_option == 3)
 				{
+					system("CLS");
 					admin.add_prerequisite(courses);
 					continue;
 				}
@@ -94,7 +126,80 @@ int main()
 
 		else if (user == 2)
 		{
-			//student control code
+			string id, password;
+			int index;
+			int flag = 0;
+			system("CLS");
+
+			while (true)
+			{
+				cout << "ID: ";
+				cin >> id;
+				cout << "Password: ";
+				cin >> password;
+
+				for (Student student : students)
+				{
+					if (student.get_id() == id && student.get_password() == password)
+					{
+						auto it = find(students.begin(), students.end(), student);
+						index = it - students.begin();
+						flag = 1;
+						break;
+					}
+				}
+
+				if (!flag)
+				{
+					cout << "Invalid ID or password. Please try again.\n";
+					continue;
+				}
+
+				break;
+			}
+
+			int student_option;
+
+			while (true)
+			{
+				cout << "1) View available courses\n2) View a specific course\n3) Register for a course\n4) View your courses\n";
+				cout << "5) Edit your data\n6) Go back\n\n>>> ";
+				cin >> student_option;
+
+				if (student_option == 1)
+				{
+					system("CLS");
+					students[index].view_available_courses(courses);
+				}
+
+				else if (student_option == 2)
+				{
+
+				}
+
+				else if (student_option == 3)
+				{
+					students[index].register_course(courses);
+				}
+
+				else if (student_option == 4)
+				{
+					system("CLS");
+					students[index].view_courses();
+				}
+
+				else if (student_option == 5)
+				{
+
+				}
+
+				else
+				{
+					break;
+				}
+			}
+
+			continue;
 		}
 
 		else

@@ -272,5 +272,4 @@ void Admin::add_prerequisite(vector<Course>& courses)
 		add_course(courses);
 		courses[course_index].get_required().push_back(courses[courses.size() - 1]);
 	}
-
 }
