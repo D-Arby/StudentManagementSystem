@@ -44,6 +44,16 @@ vector<Course>& Student::get_inProgress()
 	return inProgress;
 }
 
+void Student::set_password(string password)
+{
+	this->password = password;
+}
+
+void Student::set_year(int year)
+{
+	this->year = year;
+}
+
 void Student::view_courses()
 {
 	cout << "------ Your courses ------\n";
@@ -64,21 +74,56 @@ void Student::view_courses()
 	cout << "\n\n";
 }
 
+void Student::view_course_details(vector<Course> courses)
+{
+	int flag = 0;
+	string code;
+
+	while (true)
+	{
+		cout << "Enter course code: ";
+		cin >> code;
+
+		for (Course course : courses)
+		{
+			if (course.get_code() == code)
+			{
+				flag = 1;
+				cout << "Course name: " << course.get_name() << " (" << course.get_code() << ")" << endl;
+				cout << "Max students: " << course.get_max_students() << endl;
+				cout << "Hours: " << course.get_hours() << endl;
+				cout << "Required courses: \n";
+				for (Course req : course.get_required())
+				{
+					cout << "\tCourse name: " << req.get_name() << " (" << course.get_code() << ")" << endl;
+				}
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course not found. Please enter a valid code.\n";
+			continue;
+		}
+
+		break;
+	}
+}
+
 void Student::view_available_courses(vector<Course>& courses)
 {
 	cout << "------ Available courses ------\n\n";
 
 	for (Course course : courses)
 	{
-		cout << "Course Name: " << course.get_name() << endl;
-		cout << "Course Code: " << course.get_code() << endl;
-		cout << "Course Hours: " << course.get_hours() << endl;
+		cout << "Course Name: " << course.get_name() << " (" << course.get_code() << ")" << endl;
 
 		for (Course Finished : finished)
 		{
 			if (course.get_code() == Finished.get_code())
 			{
-				cout << " You have finished this Course " << endl;
+				cout << "You have finished this Course " << endl;
 			}
 
 			break;
@@ -88,7 +133,7 @@ void Student::view_available_courses(vector<Course>& courses)
 		{
 			if (course.get_code() == InProgress.get_code())
 			{
-				cout << " This Course is in Progress " << endl;
+				cout << "This Course is in Progress " << endl;
 			}
 
 			break;
@@ -178,6 +223,89 @@ void Student::register_course(vector<Course>& courses)
 		else
 		{
 			cout << "You haven't finished all the prerequired courses for this course.\n" << endl;
+		}
+	}
+}
+
+void Student::edit_data(vector<Course> courses)
+{
+	int option;
+
+	while (true)
+	{
+		system("CLS");
+		cout << "1) Edit password\n2) Add finished course\n3) Edit academic year\n4) Exit\n\n>>> ";
+		cin >> option;
+		system("CLS");
+		if (option == 1)
+		{
+			string new_password;
+			cout << "Enter new password: ";
+			cin >> new_password;
+			this->set_password(new_password);
+			continue;
+		}
+
+		else if (option == 2)
+		{
+			string code;
+			int flag;
+			while (true)
+			{
+				flag = 0;
+				cout << "Enter finished course code: ";
+				cin >> code;
+				for (Course course : courses)
+				{
+					if (course.get_code() == code)
+					{
+						flag = 1;
+						this->get_finished().push_back(course);
+						for (Course required : course.get_required())
+						{
+							if (find(finished.begin(), finished.end(), required) != finished.end())
+							{
+								finished.push_back(required);
+							}
+						}
+					}
+				}
+
+				if (!flag)
+				{
+					cout << "Course not found. Please add a valid code.\n";
+					continue;
+				}
+
+				break;
+			}
+
+			continue;
+		}
+
+		else if (option == 3)
+		{
+			int new_year;
+			
+			while (true)
+			{
+				cout << "Enter new academic year: ";
+				cin >> new_year;
+				if (new_year < 1 || new_year > 4)
+				{
+					cout << "Invalid year. Please enter a value between 1 and 4.\n";
+					continue;
+				}
+
+				break;
+			}
+
+			this->set_year(new_year);
+		}
+
+		else
+		{
+			break;
 		}
 	}
 }

@@ -33,6 +33,26 @@ int Course::get_hours()
 	return hours;
 }
 
+void Course::set_name(string name)
+{
+	this->name = name;
+}
+
+void Course::set_code(string code)
+{
+	this->code = code;
+}
+
+void Course::set_maxStudents(int max)
+{
+	this->maxStudents = max;
+}
+
+void Course::set_hours(int hours)
+{
+	this->hours = hours;
+}
+
 vector<Course>& Course::get_required()
 {
 	return required;

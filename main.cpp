@@ -73,46 +73,47 @@ int main()
 
 			while (true)
 			{
+				system("CLS");
 				cout << "1) Add new student\n2) Add new course\n3) Enter course prerequisite\n4) View list of all students in a specific course\n";
 				cout << "5) View list of all courses of a specific student\n6) Edit course data\n7) Go back\n\n>>> ";
 				cin >> admin_option;
-
+				system("CLS");
 				if (admin_option == 1)
 				{
-					system("CLS");
 					admin.add_student(students);
 					continue;
 				}
 
 				else if (admin_option == 2)
 				{
-					system("CLS");
 					admin.add_course(courses);
 					continue;
 				}
 
 				else if (admin_option == 3)
 				{
-					system("CLS");
 					admin.add_prerequisite(courses);
 					continue;
 				}
 
 				else if (admin_option == 4)
 				{
-					//students viewing code
-					//function should iterate over the students vector and check for the specific course
-					//and then prints the student's details if it matches the course code entered
+					admin.view_students(students, courses);
+					system("pause");
+					continue;
 				}
 
 				else if (admin_option == 5)
 				{
-					//function should print all courses of a student
+					admin.view_courses(students);
+					system("pause");
+					continue;
 				}
 
 				else if (admin_option == 6)
 				{
-					//function should take a code as input and allows the admin to enter new data for the course
+					admin.edit_course(courses);
+					continue;
 				}
 
 				else
@@ -162,19 +163,20 @@ int main()
 
 			while (true)
 			{
+				system("CLS");
 				cout << "1) View available courses\n2) View a specific course\n3) Register for a course\n4) View your courses\n";
 				cout << "5) Edit your data\n6) Go back\n\n>>> ";
 				cin >> student_option;
+				system("CLS");
 
 				if (student_option == 1)
 				{
-					system("CLS");
 					students[index].view_available_courses(courses);
 				}
 
 				else if (student_option == 2)
 				{
-
+					students[index].view_course_details(courses);
 				}
 
 				else if (student_option == 3)
@@ -184,19 +186,20 @@ int main()
 
 				else if (student_option == 4)
 				{
-					system("CLS");
 					students[index].view_courses();
 				}
 
 				else if (student_option == 5)
 				{
-
+					students[index].edit_data(courses);
 				}
 
 				else
 				{
 					break;
 				}
+
+				system("pause");
 			}
 
 			continue;

@@ -20,6 +20,10 @@ public:
 	string get_code();
 	int get_max_students();
 	int get_hours();
+	void set_name(string name);
+	void set_code(string code);
+	void set_maxStudents(int max);
+	void set_hours(int hours);
 	vector<Course>& get_required();
 };
 

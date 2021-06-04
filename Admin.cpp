@@ -22,7 +22,7 @@ void Admin::add_student(vector<Student>& students)
 {
 	string name, id, password;
 	int year;
-	int flag = 1;
+	int flag;
 	cout << "------ Adding new student ------\n";
 	cout << "Name: ";
 	cin.ignore();
@@ -30,6 +30,7 @@ void Admin::add_student(vector<Student>& students)
 	
 	while (true)
 	{
+		flag = 1;
 		cout << "ID: ";
 		cin >> id;
 
@@ -78,12 +79,13 @@ void Admin::add_course(vector<Course>& courses)
 {
 	string name, code;
 	int max, hours;
-	int flag = 1;
+	int flag;
 
 	cout << "------ Adding new course ------\n";
 
 	while (true)
 	{
+		flag = 1;
 		cout << "Name: ";
 		cin.ignore();
 		getline(cin, name);
@@ -106,10 +108,9 @@ void Admin::add_course(vector<Course>& courses)
 		break;
 	}
 
-	flag = 1;
-
 	while (true)
 	{
+		flag = 1;
 		cout << "Code: ";
 		cin >> code;
 
@@ -272,4 +273,223 @@ void Admin::add_prerequisite(vector<Course>& courses)
 		add_course(courses);
 		courses[course_index].get_required().push_back(courses[courses.size() - 1]);
 	}
+}
+
+void Admin::view_students(vector<Student> students, vector<Course> courses)
+{
+	int flag = 0;
+	string code;
+	while (true)
+	{
+		cout << "Enter course code: ";
+		cin >> code;
+		for (Course course : courses)
+		{
+			if (course.get_code() == code)
+			{
+				flag = 1;
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course not found. Please enter a valid code.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	for (Student student : students)
+	{
+		for (Course course : student.get_finished())
+		{
+			if (course.get_code() == code)
+			{
+				cout << "Student Name:" << student.get_name() << endl;
+				cout << "Student ID:" << student.get_id() << endl;
+				break;
+			}
+		}
+
+		for (Course course : student.get_inProgress())
+		{
+			if (course.get_code() == code)
+			{
+				cout << "Student Name:" << student.get_name() << endl;
+				cout << "Student ID:" << student.get_id() << endl;
+				break;
+			}
+		}
+	}
+}
+
+void Admin::view_courses(vector<Student> students)
+{
+	int flag = 0;
+	string id;
+
+	while (true)
+	{
+		cout << "Enter student ID: ";
+		cin >> id;
+
+		for (Student student : students)
+		{
+			if (student.get_id() == id)
+			{
+				flag = 1;
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "ID not found. Please enter a valid ID.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	for (Student student : students)
+	{
+		for (Course course : student.get_finished())
+		{
+			if (student.get_id() == id)
+			{
+				cout << "Course Name:" << course.get_name() << endl;
+				cout << "Course COde:" << course.get_code() << endl;
+				break;
+			}
+		}
+		for (Course course : student.get_inProgress())
+		{
+			if (student.get_id() == id)
+			{
+				cout << "Course Name:" << course.get_name() << endl;
+				cout << "Course COde:" << course.get_code() << endl;
+				break;
+			}
+		}
+	}
+}
+
+void Admin::edit_course(vector<Course>& courses)
+{
+	string code;
+	int flag = 0;
+	int index = 0;
+
+	while (true)
+	{
+		cout << "Enter course code: ";
+		cin >> code;
+		for (Course course : courses)
+		{
+			if (course.get_code() == code)
+			{
+				auto it = find(courses.begin(), courses.end(), course);
+				index = it - courses.begin();
+				flag = 1;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course not found. Please enter a valid code.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	string new_name, new_code;
+	int new_max, new_hours;
+	int size = courses.size();
+
+	while (true)
+	{
+		flag = 1;
+		cout << "Enter new course name: ";
+		cin.ignore();
+		getline(cin, new_name);
+
+		for (int i = 0; i < size; i++)
+		{
+			if (i != index && courses[i].get_name() == new_name)
+			{
+				flag = 0;
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course name already exists. Please enter a unique name.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	flag = 1;
+
+	while (true)
+	{
+		flag = 1;
+		cout << "Enter new course code: ";
+		cin >> new_code;
+
+		for (int i = 0; i < size; i++)
+		{
+			if (i != index && courses[i].get_code() == new_code)
+			{
+				flag = 0;
+				break;
+			}
+		}
+
+		if (!flag)
+		{
+			cout << "Course code already exists. Please enter a unique code.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	while (true)
+	{
+		cout << "Enter new max students: ";
+		cin >> new_max;
+		if (new_max < 1 || new_max > 500)
+		{
+			cout << "Invalid number. please enter a number between 1 and 500.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	while (true)
+	{
+		cout << "Enter new course hours: ";
+		cin >> new_hours;
+		if (new_hours < 1 || new_hours > 4)
+		{
+			cout << "Invalid number. please enter a number between 1 and 4.\n";
+			continue;
+		}
+
+		break;
+	}
+
+	courses[index].set_name(new_name);
+	courses[index].set_code(new_code);
+	courses[index].set_maxStudents(new_max);
+	courses[index].set_hours(new_hours);
+	
+	courses[index].get_required().clear();
 }

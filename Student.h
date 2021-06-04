@@ -24,7 +24,11 @@ public:
 	string get_year();
 	vector<Course>& get_finished();
 	vector<Course>& get_inProgress();
+	void set_password(string password);
+	void set_year(int year);
 	void view_courses();
+	void view_course_details(vector<Course> courses);
 	void view_available_courses(vector<Course>& courses);
 	void register_course(vector<Course>& courses);
+	void edit_data(vector<Course> courses);
 };

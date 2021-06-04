@@ -17,4 +17,7 @@ public:
 	void add_student(vector<Student>& students);
 	void add_course(vector<Course>& courses);
 	void add_prerequisite(vector<Course>& courses);
+	void view_students(vector<Student> students, vector<Course> courses);
+	void view_courses(vector<Student> students);
+	void edit_course(vector<Course>& courses);
 };
